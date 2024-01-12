@@ -1,4 +1,4 @@
-import { defineDocumentType, makeSource } from 'contentlayer/source-files'
+import {defineDocumentType, makeSource} from 'contentlayer/source-files'
 
 const Post = defineDocumentType(() => ({
   name: 'Post',
@@ -15,11 +15,16 @@ const Post = defineDocumentType(() => ({
       description: 'The date of the post',
       required: true,
     },
+    description: {
+      type: 'string',
+      description: 'The description of the post',
+      required: true,
+    },
   },
   computedFields: {
     url: {
       type: 'string',
-      resolve: (doc) => `/posts/${doc._raw.flattenedPath}`,
+      resolve: doc => `/posts/${doc._raw.flattenedPath}`,
     },
   },
 }))

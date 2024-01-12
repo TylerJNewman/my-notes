@@ -1,17 +1,20 @@
-import { format, parseISO } from 'date-fns'
-import { allPosts } from 'contentlayer/generated'
-import { getMDXComponent } from 'next-contentlayer/hooks'
+import {format, parseISO} from 'date-fns'
+import {allPosts} from 'contentlayer/generated'
+import {getMDXComponent} from 'next-contentlayer/hooks'
+import MdxComponents from '@/components/MdxComponents'
+import {Prose} from '@/components/Prose'
 
-export const generateStaticParams = async () => allPosts.map((post) => ({ slug: post._raw.flattenedPath }))
+export const generateStaticParams = async () =>
+  allPosts.map(post => ({slug: post._raw.flattenedPath}))
 
-export const generateMetadata = ({ params }) => {
-  const post = allPosts.find((post) => post._raw.flattenedPath === params.slug)
-  return { title: post.title }
+export const generateMetadata = ({params}) => {
+  const post = allPosts.find(post => post._raw.flattenedPath === params.slug)
+  return {title: post.title}
 }
 
-const PostLayout = ({ params }: { params: { slug: string } }) => {
-  const post = allPosts.find((post) => post._raw.flattenedPath === params.slug)
-
+const PostLayout = ({params}: {params: {slug: string}}) => {
+  const post = allPosts.find(post => post._raw.flattenedPath === params.slug)
+  console.log('post', post)
   const Content = getMDXComponent(post.body.code)
 
   return (
@@ -22,7 +25,9 @@ const PostLayout = ({ params }: { params: { slug: string } }) => {
         </time>
         <h1>{post.title}</h1>
       </div>
-      <Content />
+      <Prose suppressHydrationWarning>
+        <Content components={MdxComponents} />
+      </Prose>
     </article>
   )
 }
